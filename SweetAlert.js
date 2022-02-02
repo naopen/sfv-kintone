@@ -13,7 +13,8 @@
       padding: "3rem",
 
       // html: '<a href="https://freedive.cybozu.com/k/84/"><strong><font color="orangered">クリック</font></strong></a>',
-      footer: "Developed by KANNAN",
+      footer:
+        "SYSTEM Developed by KANNAN",
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: "確認アプリを開く",
