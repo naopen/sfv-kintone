@@ -14,7 +14,7 @@
 
       // html: '<a href="https://freedive.cybozu.com/k/84/"><strong><font color="orangered">クリック</font></strong></a>',
       footer:
-        "[UPDATE]<br>近いうちにブログ調の見易い確認アプリにします．<br>SYSTEM Developed by KANNAN",
+        "SYSTEM Developed by KANNAN",
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: "確認アプリを開く",
