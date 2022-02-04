@@ -5,12 +5,12 @@
     Swal.fire({
       icon: "question",
       imageUrl: "https://mugen-wifi.com/osushi.jpg",
-      imageWidth: 400,
-      imageHeight: 300,
+      imageWidth: 200,
+      imageHeight: 150,
       imageAlt: "OSUSHI image",
       title: "<strong><u>共有事項確認OK?</u></strong>",
       text: "I will close in 10 sec.",
-      padding: "3rem",
+      padding: "1.5rem",
 
       // html: '<a href="https://freedive.cybozu.com/k/84/"><strong><font color="orangered">クリック</font></strong></a>',
       footer:
