@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+<style>
+	html {
+		font-size: 0.9rem;
+	}
+</style>
+
+<div class="container-fluid" id="app">
+	<div class="row">
+		<div class="col-12">
+			<table class="table table-dark table-striped">
+				<thead>
+					<tr>
+						<th scope="col"></th>
+						<th scope="col">投稿日</th>
+						<th scope="col">投稿者</th>
+						<th scope="col">トピック</th>
+						<th scope="col">内容</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="record in records">
+						<td>
+							<a v-bind:href="`/k/84/show#record=${record.recordNum.value}`">
+								<span class="recordlist-detail-gaia" style="margin-top: 0;"></span>
+							</a>
+						</td>
+						<td>{{record.postedDate.value}}</td>
+						<td>{{record.author.value}}</td>
+						<td>{{record.title.value}}</td>
+						<td>
+							{{record.article.value}}
+						</td>
+						<td>
+							<a v-bind:href="`/k/84/show#record=${record.recordNum.value}`">
+								<span class="recordlist-detail-gaia" style="margin-top: 0;"></span>
+							</a>
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

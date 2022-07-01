@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+	<title>検品ポータルサイト</title>
+	<meta name="description" content="検品ポータルサイト｜検品ポータルサイト">
+
+	<!-- <link rel="stylesheet" type="text/css" href="./css/style.css" />
+	<link rel="icon" href="./img/favicon.ico"> -->
+
+
+</head>
+
+<body>
+	<div class="container-fluid" id="app">
+		<div class="row-12 alert alert-success alert-dismissible fade show" role="alert">
+			<i class="icon-bell"></i> これは、共有事項確認アプリの開発中画面です。
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
+		<!-- <div class="col-12 alert alert-info" role="alert">
+			<i class="icon-info-sign"></i> 内容説明pptxは <a href="./s2113618-f-Naoki-Kannan.pptx" class="alert-link">こちら</a>
+		</div> -->
+
+
+		<div class="row-12 flex-nowrap" v-for="record in records">
+			<div class="col-8 shadow-lg flex-nowrap mx-auto mb-3 px-3 py-3">
+				<h4 v-html="record.title.value"></h4>
+				<p v-html="record.article.value"></p>
+				<input type="button" class="btn btn-success mx-auto" v-bind:value="record.checkbox_1.value"
+				onclick="Swal.fire({
+					title: '何か入力してね'
+					, input: 'text'
+					, showCancelButton: true
+					, confirmButtonText: '実行'
+					, showLoaderOnConfirm: true
+					, preConfirm: function(inputStr) {
+						console.log('preConfirm起動');
+						
+						//バリデーションを入れたりしても良い
+						if (inputStr !== 'aaa') {
+						return Swal.showValidationMessage('aaaを入力してね');
+						}
+						
+						//ローディングを表示させるために3秒スリープ
+						var sleep = function(sec) {
+							return new Promise(resolve => {
+							setTimeout(resolve, sec * 1000);
+							});
+						};
+						return sleep(3);
+						
+					}
+					, allowOutsideClick: function() {
+						return !Swal.isLoading();
+					}
+					}).then(function(result) {
+					console.log(result);
+					
+					if (result.value) {
+						Swal.fire({
+						title: '完了'
+						, text:  '入力文字:' + result.value
+						});
+					}
+					});
+">
+			</div>
+			<div class="col-4 shadow-lg flex-nowrap mx-auto mb-5 px-3 py-3">
+				<h4>未チェック者一覧</h4>
+				<!-- <p v-html="record.checkbox_1.value"></p> -->
+				<p v-html="record.checkbox_1.value"></p>
+				<p v-html="record.checkbox_2.value"></p>
+				<p v-html="record.checkbox_3.value"></p>
+			</div>
+		</div>
+
+
+
+
+		<hr>
+
+		<div class="row-12">
+			<footer>
+				<p><small>このページは、〇〇です.
+						<br>&copy; 2021 Naoki Kannan All Rights Reserved.</small></p>
+			</footer>
+		</div>
+
+	</div>
+
+	<br>
+	<br>
+	</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="./js/script.js"></script>
+</body>
+
+</html>
