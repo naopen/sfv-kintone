@@ -66,7 +66,8 @@
 			searchBtn.addEventListener("click", function () {
 				Swal.fire({
 					icon: "info",
-					title: "kintoneを全体検索する<br>（右上の検索欄と同じ機能だよ）",
+					// （右上の検索欄と同じ機能です）だけ文字を小さくする
+					title: "kintoneを全体検索する<br><small>（右上の検索欄と同じ機能です）</small>",
 					input: "text",
 					inputPlaceholder: "キーワードを入力してください",
 					showCancelButton: true,
@@ -81,6 +82,24 @@
 				}).then((result) => {
 					if (result.value) {
 						window.location.href = `https://freedive.cybozu.com/k/search?keyword=${result.value}`;
+					}
+					// 何も入力されていない時はエラーメッセージを表示して表示が終わるまで待った後にページを再読み込みする
+					else if (result.value === "") {
+						Swal.fire({
+							icon: "error",
+							title: "キーワードを入力してください",
+							showConfirmButton: false,
+							timer: 1500,
+							timerProgressBar: true,
+						});
+						setTimeout(function () {
+							location.reload();
+						}
+							, 1500);
+					}
+					// キャンセルボタンを押した時はページを再読み込みする
+					else {
+						location.reload();
 					}
 				});
 			});
