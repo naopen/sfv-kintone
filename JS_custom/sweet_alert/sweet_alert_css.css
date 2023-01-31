@@ -1,0 +1,19 @@
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+input[type="checkbox"][id="no-show-today"] {
+  display: none;
+}
+
+/*** custom checkboxes ***/
+
+input[type="checkbox"][id="no-show-today"] + label:before {
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f096";
+  letter-spacing: 10px;
+} /* unchecked icon */
+
+input[type="checkbox"][id="no-show-today"]:checked + label:before {
+  content: "\f046";
+  letter-spacing: 5px;
+} /* checked icon */
