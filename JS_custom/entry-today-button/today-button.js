@@ -29,7 +29,6 @@
 				return;
 
 			// eventのrecordsのtoday_for_b2のvalueをtodayに書き換える
-			// updatekeyを用いる
 			const updateRecords = [];
 			for (let i = 0; i < records.length; i++) {
 				updateRecords[i] = {
