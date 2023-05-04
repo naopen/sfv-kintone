@@ -19,16 +19,23 @@
 		myIndexButton.style.backgroundColor = "#FFC0CB";
 		myIndexButton.style.color = "#000000";
 
-		const myProgressDiv = document.createElement('div');
-		myProgressDiv.id = "my_progress_container_1";
-		myProgressDiv.style.width = '900px';
-		myProgressDiv.style.height = '50px';
-		myProgressDiv.style.margin = '8px 0 0 0';
-		// 右に寄せる
+		const myProgressDiv_1 = document.createElement('div');
+		myProgressDiv_1.id = "my_progress_container_1";
+		myProgressDiv_1.style.width = '900px';
+		myProgressDiv_1.style.height = '23.5px';
+		myProgressDiv_1.style.margin = '0 0 0 0';
+
+		const myProgressDiv_2 = document.createElement('div');
+		myProgressDiv_2.id = "my_progress_container_2";
+		myProgressDiv_2.style.width = '900px';
+		myProgressDiv_2.style.height = '25.5px';
+		myProgressDiv_2.style.margin = '0 0 0 0';
+
 
 		// ボタンをヘッダメニューに追加
 		kintone.app.getHeaderMenuSpaceElement().appendChild(myIndexButton);
-		kintone.app.getHeaderMenuSpaceElement().appendChild(myProgressDiv);
+		kintone.app.getHeaderMenuSpaceElement().appendChild(myProgressDiv_1);
+		kintone.app.getHeaderMenuSpaceElement().appendChild(myProgressDiv_2);
 	});
 })();
 
@@ -36,43 +43,48 @@
 
 
 async function handleClick() {
+	// 長時間掛かることの警告を表示
+	if (!confirm('この処理には　【数十分～数時間】　かかる場合があります。実行しますか？')) {
+		return;
+	}
 	// 全件ではなく一覧画面のレコードを取得する
 	let totalData = [];
 	try {
-		// 実行確認ダイアログを表示
-		if (!confirm('ダウンロードしますか？')) {
-			return;
-		}
+		//処理中にページ移動しようとした場合に警告を表示する
+		window.onbeforeunload = function (e) {
+			return "このページを離れると処理が中断されます。";
+		};
 
 		// 処理の進捗を示すプログレスバーを表示 (ProgressBar.jsを使用)
-		const progressBar_1 = new ProgressBar.Line('#my_progress_container_1',
-			{
-				strokeWidth: 0.01, // プログレスバーの太さ
-				easing: 'easeInOut', // プログレスバーの進み方
-				duration: 100, // 0.1秒ごとに更新
-				color: '#77d9a8',
-				trailColor: '#eee', // プログレスバーの線の色
-				trailWidth: 0.01,
-				svgStyle: { width: '100%', height: '100%' },
-				text: {
-					style: {
-						color: '#4D4D4D',
-						position: 'relative',
-						left: '750px',
-						top: '-120px',
-						padding: 0,
-						margin: 0,
-						transform: null
-					},
-					autoStyleContainer: false
+		const progressBar_1 = new ProgressBar.Line('#my_progress_container_1', {
+			strokeWidth: 0.01, // プログレスバーの太さ
+			easing: 'easeInOut', // プログレスバーの進み方
+			duration: 100, // 0.1秒ごとに更新
+			color: '#77d9a8',
+			trailColor: '#eee', // プログレスバーの線の色
+			trailWidth: 0.01,
+			svgStyle: { width: '100%', height: '100%' },
+			text: {
+				style: {
+					color: '#4D4D4D',
+					position: 'relative',
+					left: '750px',
+					top: '-100px',
+					padding: 0,
+					margin: 0,
+					transform: null
 				},
-				from: { color: '#77d9a8' },
-				to: { color: '#3399FF' },
-				step: (state, bar) => {
-					bar.path.setAttribute('stroke', state.color);
-					bar.setText(Math.round(bar.value() * 100) + ' %');
-				}
-			});
+				autoStyleContainer: false
+			},
+			from: { color: '#77d9a8' },
+			to: { color: '#3399FF' },
+			step: (state, bar) => {
+				bar.path.setAttribute('stroke', state.color);
+				bar.setText('Step1: レコードの全件取得　　' + Math.round(bar.value() * 100) + ' %');
+			}
+		});
+
+
 
 
 		let readCount = 0; //カーソルAPIから何度呼び出したか
@@ -125,6 +137,39 @@ async function handleClick() {
 		* ここにカーソルAPIからのデータ取得後処理が入る。
 		*/
 
+		//処理中にページ移動しようとした場合に警告を表示する
+		window.onbeforeunload = function (e) {
+			return "このページを離れると処理が中断されます。";
+		};
+
+		const progressBar_2 = new ProgressBar.Line('#my_progress_container_2', {
+			strokeWidth: 0.01, // プログレスバーの太さ
+			easing: 'easeInOut', // プログレスバーの進み方
+			duration: 100, // 0.1秒ごとに更新
+			color: '#03af7a',
+			trailColor: '#eee', // プログレスバーの線の色
+			trailWidth: 0.01,
+			svgStyle: { width: '100%', height: '100%' },
+			text: {
+				style: {
+					color: '#4D4D4D',
+					position: 'relative',
+					left: '750px',
+					top: '-100px',
+					padding: 0,
+					margin: 0,
+					transform: null
+				},
+				autoStyleContainer: false
+			},
+			from: { color: '#03af7a' },
+			to: { color: '#005aff' },
+			step: (state, bar) => {
+				bar.path.setAttribute('stroke', state.color);
+				bar.setText('Step2: コメントの全件取得　　' + Math.round(bar.value() * 100) + ' %');
+			}
+		});
+
 		//エスケープ
 		function escapeStr(value) {
 			return '"' + (value ? value.replace(/"/g, '""') : '') + '"';
@@ -150,98 +195,101 @@ async function handleClick() {
 			link.dispatchEvent(e);
 			console.log("■■■■■■　CSVダウンロード完了　■■■■■■");
 		}
-	}
 
-	//レコード一覧からコメント情報を取得する
-	function getCommentCsv(records, opt_comments, opt_i, opt_offset) {
+		//レコード一覧からコメント情報を取得する
+		function getCommentCsv(records, opt_comments, opt_i, opt_offset) {
 
-		var i = opt_i || 0; //レコードのカウント
-		var comments = opt_comments || [];
-		var offset = opt_offset || 0;
+			var i = opt_i || 0; //レコードのカウント
+			var comments = opt_comments || [];
+			var offset = opt_offset || 0;
 
-		var appId = kintone.app.getId(); //アプリID
-		var recordId = records[i]['$id']['value']; //レコードID
+			var appId = kintone.app.getId(); //アプリID
+			var recordId = records[i]['$id']['value']; //レコードID
 
-		var params = {
-			'app': appId,
-			'record': recordId,
-			'offset': offset
-		};
+			var params = {
+				'app': appId,
+				'record': recordId,
+				'offset': offset
+			};
 
-		console.log("■■■■■■　コメント取得　■■■■■■");
-		//一覧画面からコメント取得
-		return kintone.api(
-			kintone.api.url('/k/v1/record/comments', true), 'GET', params).then(function (resp) {
+			console.log("■■■■■■　コメント取得　■■■■■■");
+			//一覧画面からコメント取得
+			return kintone.api(
+				kintone.api.url('/k/v1/record/comments', true), 'GET', params).then(function (resp) {
 
-				//CSVデータの作成
-				for (var j = 0; j < resp.comments.length; j++) {
-					var row = [];
-					var mentions_code = [];
-					var mentions_type = [];
+					//CSVデータの作成
+					for (var j = 0; j < resp.comments.length; j++) {
+						var row = [];
+						var mentions_code = [];
+						var mentions_type = [];
 
-					if (resp.comments[j].mentions[0] === undefined) {
-						resp.comments[j].mentions.code = null;
+						if (resp.comments[j].mentions[0] === undefined) {
+							resp.comments[j].mentions.code = null;
+						}
+						for (var k = 0; k < resp.comments[j].mentions.length; k++) {
+							mentions_code.push(resp.comments[j].mentions[k].code);
+							mentions_type.push(resp.comments[j].mentions[k].type);
+						}
+						row.push(escapeStr(recordId));                       //レコードID
+						row.push(escapeStr(resp.comments[j].id));            //コメントID
+						row.push(escapeStr(resp.comments[j].text));          //コメント内容
+						row.push(escapeStr(resp.comments[j].createdAt));     //投稿日時
+						row.push(escapeStr(resp.comments[j].creator.code));  //投稿者ログイン名
+						row.push(escapeStr(resp.comments[j].creator.name));  //投稿者表示名
+						row.push(escapeStr(mentions_code.join(',')));   //メンション宛先
+						row.push(escapeStr(mentions_type.join(',')));   //メンションタイプ
+						comments.push(row);
+
+						// プログレスバーを更新
+						progressBar_2.animate((i + 1) / records.length);
 					}
-					for (var k = 0; k < resp.comments[j].mentions.length; k++) {
-						mentions_code.push(resp.comments[j].mentions[k].code);
-						mentions_type.push(resp.comments[j].mentions[k].type);
+
+					//コメントを全て参照したか判定
+					if (resp.older) {
+						return getCommentCsv(records, comments, i, offset + 10);
 					}
-					row.push(escapeStr(recordId));                       //レコードID
-					row.push(escapeStr(resp.comments[j].id));            //コメントID
-					row.push(escapeStr(resp.comments[j].text));          //コメント内容
-					row.push(escapeStr(resp.comments[j].createdAt));     //投稿日時
-					row.push(escapeStr(resp.comments[j].creator.code));  //投稿者ログイン名
-					row.push(escapeStr(resp.comments[j].creator.name));  //投稿者表示名
-					row.push(escapeStr(mentions_code.join(',')));   //メンション宛先
-					row.push(escapeStr(mentions_type.join(',')));   //メンションタイプ
-					comments.push(row);
-				}
 
-				//コメントを全て参照したか判定
-				if (resp.older) {
-					return getCommentCsv(records, comments, i, offset + 10);
-				}
+					i = i + 1;
+					//レコードを全て参照したか判定
+					if (records.length !== i) {
+						return getCommentCsv(records, comments, i);
+					}
+					console.log("■■■■■■　コメント取得完了　■■■■■■");
+					return comments;
+				});
+		}
 
-				i = i + 1;
-				//レコードを全て参照したか判定
-				if (records.length !== i) {
-					return getCommentCsv(records, comments, i);
+		//コメント一覧のCSVファイルを作成
+		async function createCSVData(records) {
+			getCommentCsv(records).then(function (comments) {
+
+				console.log("■■■■■■　CSV作成　■■■■■■");
+				var comments_csv = [];
+				//CSVファイルの列名
+				var column_row = ['レコードID', 'コメントID', 'コメント内容',
+					'投稿日時', '投稿者ログイン名', '投稿者表示名',
+					'メンション宛先', 'メンションタイプ'];
+				if (comments.length === 0) {
+					alert('コメントが登録されていません');
+					return;
 				}
-				console.log("■■■■■■　コメント取得完了　■■■■■■");
-				return comments;
+				comments_csv.push(column_row);
+				for (var i = 0; i < comments.length; i++) {
+					comments_csv.push(comments[i]);
+				}
+				console.log("■■■■■■　CSV作成完了　■■■■■■");
+				// BOM付でダウンロード
+				downloadCSV(comments_csv);
 			});
+		}
+
+		// CSVデータを作成・ダウンロード
+		await createCSVData(totalData.records);
+		console.log(totalData.records);
+		console.log("処理おわり！！");
+		return;
 	}
-
-	//コメント一覧のCSVファイルを作成
-	function createCSVData(records) {
-		getCommentCsv(records).then(function (comments) {
-
-			console.log("■■■■■■　CSV作成　■■■■■■");
-			var comments_csv = [];
-			//CSVファイルの列名
-			var column_row = ['レコードID', 'コメントID', 'コメント内容',
-				'投稿日時', '投稿者ログイン名', '投稿者表示名',
-				'メンション宛先', 'メンションタイプ'];
-			if (comments.length === 0) {
-				alert('コメントが登録されていません');
-				return;
-			}
-			comments_csv.push(column_row);
-			for (var i = 0; i < comments.length; i++) {
-				comments_csv.push(comments[i]);
-			}
-			console.log("■■■■■■　CSV作成完了　■■■■■■");
-			// BOM付でダウンロード
-			downloadCSV(comments_csv);
-		});
-	}
-
-	// CSVデータを作成・ダウンロード
-	createCSVData(totalData.records);
-	console.log(totalData.records);
-	console.log("処理おわり！！");
-	return;
-}
+};
 
 
 
