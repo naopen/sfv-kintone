@@ -6,15 +6,15 @@
 		if (event.viewName !== "● [レコード一括削除用] 解約済顧客")
 			return;
 		// ボタンがもし既に表示されていたら，何もしない
-		if (document.getElementById('delete_button') !== null) {
+		if (document.getElementById('delete_button') !== null)
 			return;
-		}
 
-		//レコード一覧画面にボタンを設置
+		// ボタンを作成
 		var myIndexButton = document.createElement('button');
 		myIndexButton.id = 'delete_button';
 		myIndexButton.innerText = 'レコード一括削除';
 		myIndexButton.className = 'kintoneplugin-button-normal';
+		// 色を変える
 		myIndexButton.style.backgroundColor = "#ff4b00";
 		myIndexButton.style.color = "#ffffff";
 
@@ -49,17 +49,17 @@
 
 			console.log(targetRecords);
 
-			// //3.deleteAllRecordsを使って（2で抽出したIDをパラメータに渡し）、全件削除
-			// //レコード削除
-			// const res_dell = await client.record.deleteAllRecords({
-			// 	app: appId,
-			// 	records: targetRecords,
-			// });
+			//3.deleteAllRecordsを使って（2で抽出したIDをパラメータに渡し）、全件削除
+			//レコード削除
+			const res_dell = await client.record.deleteAllRecords({
+				app: appId,
+				records: targetRecords,
+			});
 
+			//アラート
+			alert(recordsLength + '件のレコードを削除しました。');
 			//リロード
 			location.reload();
-			//アラート
-			alert("レコードを全件削除しました。");
 
 		});
 
