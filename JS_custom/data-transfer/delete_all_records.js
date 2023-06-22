@@ -2,28 +2,34 @@
 	"use strict";
 	kintone.events.on('app.record.index.show', function (event) {
 
-		if (document.getElementById('my_index_button_01') !== null) {
+		// ボタンを表示する画面であるかを判定する
+		if (event.viewName !== "● [レコード一括削除用] 解約済顧客")
+			return;
+		// ボタンがもし既に表示されていたら，何もしない
+		if (document.getElementById('delete_button') !== null) {
 			return;
 		}
 
 		//レコード一覧画面にボタンを設置
 		var myIndexButton = document.createElement('button');
 		myIndexButton.id = 'delete_button';
-		myIndexButton.innerText = '⚠レコード一括削除⚠';
+		myIndexButton.innerText = 'レコード一括削除';
 		myIndexButton.className = 'kintoneplugin-button-normal';
 		myIndexButton.style.backgroundColor = "#ff4b00";
 		myIndexButton.style.color = "#ffffff";
 
+		let recordsLength = event.records.length;
+
 		// ボタンクリック時の処理
 		myIndexButton.addEventListener("click", async (event) => {
 			// 警告
-			if (!confirm('一覧のレコードを全件削除します。削除する件数は' + event.records.length + '件です。よろしいですか？'))
+			if (!confirm('一覧のレコードを全件削除します。削除する件数は' + recordsLength + '件です。よろしいですか？'))
 				return;
 			// 再度警告
-			else if (!confirm('本当に' + event.records.length + '件のレコードを削除しますか？'))
+			else if (!confirm('本当に' + recordsLength + '件のレコードを削除しますか？'))
 				return;
 			// 最終警告
-			else if (!confirm('本当に' + event.records.length + '件のレコードを削除しますか？\n\nこの操作は取り消せません。\n\nよろしいですか？'))
+			else if (!confirm('本当に' + recordsLength + '件のレコードを削除しますか？\n\nこの操作は取り消せません。\n\nよろしいですか？'))
 				return;
 
 			//1.getAllRecordsをつかって対象のものを全件取得
