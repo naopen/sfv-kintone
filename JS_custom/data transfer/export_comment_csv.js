@@ -328,9 +328,9 @@ async function createCursor() {
 		// 'fields': ['レコード番号', '作成者', '作成日時'],
 		// kenpin_dateが2022-11-30以前かつ空欄でないレコードを取得する
 		// 本番用
-		// 'query': 'kenpin_date <= "2022-11-30" and kenpin_date != ""',
+		'query': 'kenpin_date <= "2022-11-30" and kenpin_date != ""',
 		// デバッグ用
-		'query': 'kenpin_date = "2022-11-01"',
+		// 'query': 'kenpin_date = "2022-11-01"',
 		'size': getPerSize
 	};
 
