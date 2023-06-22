@@ -3,7 +3,7 @@
 	kintone.events.on('app.record.index.show', async (event) => {
 
 		// ボタンを表示する画面であるかを判定する
-		if (event.viewName !== "[一括削除用] 解約済顧客")
+		if (event.viewName !== "○ [コメントDL用] 解約済顧客" && event.viewName !== "○ [デバッグ用] 解約済顧客")
 			return;
 		// ボタンがもし既に表示されていたら，何もしない
 		if (document.getElementById("delete_button") !== null)
@@ -12,7 +12,7 @@
 		// ボタンを作成
 		const myIndexButton = document.createElement('button');
 		myIndexButton.id = 'delete_button';
-		myIndexButton.innerHTML = 'ダウンロード実行';
+		myIndexButton.innerHTML = 'コメントDL実行';
 		myIndexButton.onclick = handleClick;
 		myIndexButton.className = "kintoneplugin-button-normal";
 		// 色を変える
@@ -44,7 +44,7 @@
 
 async function handleClick() {
 	// 長時間掛かることの警告を表示
-	if (!confirm('この処理には　【数十分～数時間】　かかる場合があります。実行しますか？')) {
+	if (!confirm('コメントの全件ダウンロードには　【数十分～数時間】　かかる場合があります。\n\nこのページを離れると処理が中断される場合があります。\n\n実行しますか？')) {
 		return;
 	}
 	// 全件ではなく一覧画面のレコードを取得する
@@ -205,6 +205,9 @@ async function handleClick() {
 
 			var appId = kintone.app.getId(); //アプリID
 			var recordId = records[i]['$id']['value']; //レコードID
+			var customerID = records[i]['id']['value']; //契約番号
+			var customerName = records[i]['name']['value']; //契約者氏名
+			var phoneNumber = records[i]['phone_number']['value']; //電話番号
 
 			var params = {
 				'app': appId,
@@ -231,6 +234,9 @@ async function handleClick() {
 							mentions_type.push(resp.comments[j].mentions[k].type);
 						}
 						row.push(escapeStr(recordId));                       //レコードID
+						row.push(escapeStr(customerID));                     //契約番号
+						row.push(escapeStr(customerName));                   //契約者氏名
+						row.push(escapeStr(phoneNumber));                    //電話番号
 						row.push(escapeStr(resp.comments[j].id));            //コメントID
 						row.push(escapeStr(resp.comments[j].text));          //コメント内容
 						row.push(escapeStr(resp.comments[j].createdAt));     //投稿日時
@@ -266,7 +272,8 @@ async function handleClick() {
 				console.log("■■■■■■　CSV作成　■■■■■■");
 				var comments_csv = [];
 				//CSVファイルの列名
-				var column_row = ['レコードID', 'コメントID', 'コメント内容',
+				var column_row = ['レコードID', '契約番号', '契約者氏名', '電話番号',
+					'コメントID', 'コメント内容',
 					'投稿日時', '投稿者ログイン名', '投稿者表示名',
 					'メンション宛先', 'メンションタイプ'];
 				if (comments.length === 0) {
@@ -320,7 +327,10 @@ async function createCursor() {
 		'app': kintone.app.getId(),
 		// 'fields': ['レコード番号', '作成者', '作成日時'],
 		// kenpin_dateが2022-11-30以前かつ空欄でないレコードを取得する
-		'query': 'kenpin_date <= "2022-11-30" and kenpin_date != ""',
+		// 本番用
+		// 'query': 'kenpin_date <= "2022-11-30" and kenpin_date != ""',
+		// デバッグ用
+		'query': 'kenpin_date = "2022-11-01"',
 		'size': getPerSize
 	};
 
