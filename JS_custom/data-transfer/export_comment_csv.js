@@ -6,12 +6,12 @@
 		if (event.viewName !== "○ [コメントDL用] 解約済顧客" && event.viewName !== "○ [デバッグ用] 解約済顧客")
 			return;
 		// ボタンがもし既に表示されていたら，何もしない
-		if (document.getElementById("delete_button") !== null)
+		if (document.getElementById("comments_dl_button") !== null)
 			return;
 
 		// ボタンを作成
 		const myIndexButton = document.createElement('button');
-		myIndexButton.id = 'delete_button';
+		myIndexButton.id = 'comments_dl_button';
 		myIndexButton.innerHTML = 'コメントDL実行';
 		myIndexButton.onclick = handleClick;
 		myIndexButton.className = "kintoneplugin-button-normal";
