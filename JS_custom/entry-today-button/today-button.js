@@ -3,8 +3,12 @@
 	kintone.events.on('app.record.index.show', (event) => {
 
 		// ボタンを表示する画面であるかを判定する
-		// if (event.viewName !== "端末発送：即日 - コピー")
-		// 	return;
+		if (event.viewName === "○ [コメントDL用] 解約済顧客")
+			return;
+		if (event.viewName === "○ [デバッグ用] 解約済顧客")
+			return;
+		if (event.viewName === "● [レコード一括削除用] 解約済顧客")
+			return;
 		// ボタンがもし既に表示されていたら，何もしない
 		if (document.getElementById("today_button") !== null)
 			return;
