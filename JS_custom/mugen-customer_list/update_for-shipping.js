@@ -13,6 +13,7 @@
     myIndexButton.id = "my_index_button";
     myIndexButton.innerText =
       "【在庫端末】 ▶▶▶ 【顧客使用中端末】　　（このボタンを押すと今までマクロがやっていたことを瞬時に行えます）";
+    myIndexButton.className = "kintoneplugin-button-normal";
 
     // ボタンクリック時の処理
     myIndexButton.onclick = () => {
@@ -37,8 +38,8 @@
           .api(getUrl, "GET", getBody)
           .then(function (resp) {
             const ids = resp.records.map(function (record) {
-                return record.$id.value;
-              }),
+              return record.$id.value;
+            }),
               putBody = { app: kintone.app.getId(), records: [] };
             ids.forEach(function (id) {
               putBody.records.push({ id: id, action: condition.doAction });
