@@ -11,13 +11,13 @@
 
     const myIndexButton = document.createElement("button");
     myIndexButton.id = "my_index_button";
-    myIndexButton.innerText = "【AIR-U修理済】 ▶▶▶ 【AIR-U修理予定】";
+    myIndexButton.innerText = "【AIR-U修理中】 ▶▶▶ 【AIR-U修理予定】";
     myIndexButton.className = "kintoneplugin-button-normal";
 
     // ボタンクリック時の処理
     myIndexButton.onclick = () => {
       javascript: (function () {
-        const fromStatus = "AIR-U修理済",
+        const fromStatus = "AIR-U修理中",
           doAction = "AIR-U修理予定にする",
           condition = { fromStatus: fromStatus, doAction: doAction },
           getUrl = kintone.api.url("/k/v1/records", !0),

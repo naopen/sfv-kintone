@@ -11,7 +11,7 @@
 
     const myIndexButton = document.createElement("button");
     myIndexButton.id = "my_index_button";
-    myIndexButton.innerText = "【在庫端末】 ▶▶▶ 【AIR-U解約予定端末】";
+    myIndexButton.innerText = "【在庫端末】 ▶▶▶ 【AIR-U解約予定】";
     myIndexButton.className = "kintoneplugin-button-normal";
 
     // ボタンクリック時の処理
