@@ -57,6 +57,29 @@
             return result ? kintone.api(putUrl, "PUT", putBody) : reject();
           })
           .then(function (resp) {
+            // ステータス更新後の処理
+            // 処理はステータス更新した全てのレコードに対して行う
+            // Before: チェックボックス「在庫端末→顧客使用中端末」の「実行する」チェックが入っている
+            // After: チェックボックス「在庫端末→顧客使用中端末」の「実行する」チェックが外れている
+            const putBody = {
+              app: kintone.app.getId(),
+              records: [],
+            };
+            resp.records.forEach(function (record) {
+              putBody.records.push({
+                id: record.id,
+                record: {
+                  "在庫端末_顧客使用中端末": {
+                    value: [],
+                  },
+                },
+              });
+            });
+            console.log(putBody);
+            const putUrl = kintone.api.url("/k/v1/records", !0);
+            return kintone.api(putUrl, "PUT", putBody);
+          })
+          .then(function (resp) {
             console.log(resp),
               alert(
                 "ステータスの一括更新が完了しました\n\n⚠注意！⚠　101台以上の端末がある場合は再度同じ操作を実行してください"
