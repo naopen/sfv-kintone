@@ -17,7 +17,7 @@
     myIndexButton.onclick = () => {
       javascript: (function () {
         const fromStatus = "在庫端末",
-          doAction = "実はAIR-U解約予定だった",
+          doAction = "AIR-U解約予定にする",
           condition = { fromStatus: fromStatus, doAction: doAction },
           getUrl = kintone.api.url("/k/v1/records", !0),
           putUrl = kintone.api.url("/k/v1/records/status", !0);
@@ -36,8 +36,8 @@
           .api(getUrl, "GET", getBody)
           .then(function (resp) {
             const ids = resp.records.map(function (record) {
-                return record.$id.value;
-              }),
+              return record.$id.value;
+            }),
               putBody = { app: kintone.app.getId(), records: [] };
             ids.forEach(function (id) {
               putBody.records.push({ id: id, action: condition.doAction });
@@ -54,6 +54,29 @@
               (message += "\n　実行アクション：" + condition.doAction);
             const result = window.confirm(message);
             return result ? kintone.api(putUrl, "PUT", putBody) : reject();
+          })
+          .then(function (resp) {
+            // ステータス更新後の処理
+            // 処理はステータス更新した全てのレコードに対して行う
+            // Before: チェックボックス「在庫端末→AIR-U解約予定」の「実行する」チェックが入っている
+            // After: チェックボックス「在庫端末→AIR-U解約予定」の「実行する」チェックが外れている
+            const putBody = {
+              app: kintone.app.getId(),
+              records: [],
+            };
+            resp.records.forEach(function (record) {
+              putBody.records.push({
+                id: record.id,
+                record: {
+                  "在庫端末_AIR_U解約予定": {
+                    value: [],
+                  },
+                },
+              });
+            });
+            console.log(putBody);
+            const putUrl = kintone.api.url("/k/v1/records", !0);
+            return kintone.api(putUrl, "PUT", putBody);
           })
           .then(function (resp) {
             console.log(resp),
