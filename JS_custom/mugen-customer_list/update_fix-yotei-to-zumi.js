@@ -17,8 +17,8 @@
     // ボタンクリック時の処理
     myIndexButton.onclick = () => {
       javascript: (function () {
-        const fromStatus = "在庫端末",
-          doAction = "既に解約した",
+        const fromStatus = "AIR-U修理予定",
+          doAction = "AIR-U解約済にする",
           condition = { fromStatus: fromStatus, doAction: doAction },
           getUrl = kintone.api.url("/k/v1/records", !0),
           putUrl = kintone.api.url("/k/v1/records/status", !0);
