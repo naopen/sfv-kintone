@@ -8,8 +8,8 @@
 		previousButton.innerText = '前のレコード';
 		previousButton.className = 'kintoneplugin-button-normal';
 		// 色を変える
-		previousButton.style.backgroundColor = "#007bff ";
-		previousButton.style.color = "#ffffff";
+		previousButton.style.backgroundColor = "#C4C6FF ";
+		previousButton.style.color = "#4D4D4D";
 
 		// 次のレコードに移動するボタンを作成
 		const nextButton = document.createElement('button');
@@ -17,8 +17,8 @@
 		nextButton.innerText = '次のレコード';
 		nextButton.className = 'kintoneplugin-button-normal';
 		// 色を変える
-		nextButton.style.backgroundColor = "#28a745 ";
-		nextButton.style.color = "#ffffff";
+		nextButton.style.backgroundColor = "#ABFCD1 ";
+		nextButton.style.color = "#4D4D4D";
 
 		// ボタンを表示する場所を取得
 		const headerSpace = kintone.app.record.getHeaderMenuSpaceElement();
