@@ -6,7 +6,7 @@
 		const previousButton = document.createElement('button');
 		previousButton.id = 'previous_button';
 		previousButton.innerText = '前のレコード';
-		previousButton.className = 'kintoneplugin-button-normal';
+		previousButton.className = 'kintone-plugin-button-normal';
 		// 色を変える
 		previousButton.style.backgroundColor = "#ff4b00";
 		previousButton.style.color = "#ffffff";
@@ -15,7 +15,7 @@
 		const nextButton = document.createElement('button');
 		nextButton.id = 'next_button';
 		nextButton.innerText = '次のレコード';
-		nextButton.className = 'kintoneplugin-button-normal';
+		nextButton.className = 'kintone-plugin-button-normal';
 		// 色を変える
 		nextButton.style.backgroundColor = "#ff4b00";
 		nextButton.style.color = "#ffffff";
@@ -42,14 +42,14 @@
 				'GET',
 				{ app: kintone.app.getId(), id: previousRecordNumStr },
 				function (resp) {
-					console.log(resp); 1
+					console.log(resp);
 					kintone.app.record.set(resp);
 				},
 				function (error) {
 					console.log(error);
 				}
 			);
-		}
+		});
 
 		// nextボタンクリック時の処理
 		nextButton.addEventListener("click", async (event) => {
@@ -74,7 +74,7 @@
 					console.log(error);
 				}
 			);
-		}
+		});
 	});
 })();
 
