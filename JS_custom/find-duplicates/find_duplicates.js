@@ -75,7 +75,7 @@
 		// クエリ条件：ステータスが「契約書未発送」かつIMEIが空白と等しいかつ重複確認が「重複あり」にチェックが入っていないかつ作成日時が直近1ヶ月以内
 		// 取得するフィールド：レコード番号($id)、契約番号(id)、契約者氏名(name)、電話番号(phone_number)
 		// limit 500：取得するレコード数の上限を500件に設定
-		const from_compare = {
+		let api_of_todayRecordsObject = {
 			app: kintone.app.getId(),
 			query: 'ステータス in ("契約書未発送") and imei = "" and 重複確認 not in ("重複あり") and 作成日時 >= LAST_MONTH() limit 500',
 			fields: ['$id', 'id', 'name', 'phone_number'],
@@ -87,7 +87,13 @@
 		// クエリ条件：重複確認が「重複あり」にチェックが入っていないかつ作成日時が直近1ヶ月以内
 		// 取得するフィールド：レコード番号($id)、契約番号(id)、契約者氏名(name)、電話番号(phone_number)
 		// limit 500：取得するレコード数の上限を500件に設定
-		const to_compare = {
+		// let api_of_pastRecordsObject = {
+		// 	app: kintone.app.getId(),
+		// 	query: '重複確認 not in ("重複あり") and 作成日時 >= LAST_YEAR() limit 500',
+		// 	fields: ['$id', 'id', 'name', 'phone_number'],
+		// 	totalCount: true
+		// };
+		let api_of_pastRecordsObject = {
 			app: kintone.app.getId(),
 			query: '重複確認 not in ("重複あり") and 作成日時 >= LAST_MONTH() limit 500',
 			fields: ['$id', 'id', 'name', 'phone_number'],
@@ -103,66 +109,60 @@
 				};
 
 				// 比較元クエリを実行し、保存
-				const from_response = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', from_compare);
-				const from_records = from_response.records;
-				const from_totalCount = from_response.totalCount;
+				const todayRecordsObject = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', api_of_todayRecordsObject);
+				let todayRecords = todayRecordsObject.records;
+				const count_of_todayRecords = todayRecordsObject.totalCount;
 
 				// 比較先クエリを実行し、保存
-				const to_response = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', to_compare);
-				const to_records = to_response.records;
-				const to_totalCount = to_response.totalCount;
-
-				console.log("from_records:");
-				console.log("to_records: ");
-				console.log(from_records);
-				console.log(to_records);
-				console.log("from_totalCount: " + from_totalCount);
-				console.log("to_totalCount: " + to_totalCount);
-
-
+				const pastRecordsObject = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', api_of_pastRecordsObject);
+				let pastRecords = pastRecordsObject.records;
+				const count_of_pastRecords = pastRecordsObject.totalCount;
 
 				// もしクエリの返り値のレコード数が500件より多い場合はループ処理を行い、全てのレコードを取得する
-				if (from_totalCount > 500 || to_totalCount > 500) {
+				if (count_of_todayRecords > 500 || count_of_pastRecords > 500) {
 					console.log("500件より多いレコードがあります。");
 					// offsetを初期化
-					let fromOffset = 0;
-					let toOffset = 0;
+					let offset_of_todayRecords = 0;
+					let offset_of_pastRecords = 0;
 
 					// 保存したレコードに501件以降を追加していく
-					while (from_totalCount > from_records.length) {
-						fromOffset += 500;
-						from_compare.query = 'ステータス in ("契約書未発送") and imei = "" and 重複確認 not in ("重複あり") and 作成日時 >= LAST_MONTH() limit 500 offset ' + fromOffset;
-						const from_response_2 = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', from_compare);
-						console.log(from_response_2);
-						from_records.push(...from_response_2.records);
+					while (count_of_todayRecords > offset_of_todayRecords) {
+						offset_of_todayRecords += 500;
+						api_of_todayRecordsObject.query = 'ステータス in ("契約書未発送") and imei = "" and 重複確認 not in ("重複あり") and 作成日時 >= LAST_MONTH() limit 500 offset ' + offset_of_todayRecords;
+						const temp_of_todayRecordsObject = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', api_of_todayRecordsObject);
+						console.log(temp_of_todayRecordsObject);
+						todayRecords.push(...temp_of_todayRecordsObject.records);
 					}
-					while (to_totalCount > to_records.length) {
-						toOffset += 500;
-						to_compare.query = '重複確認 not in ("重複あり") and 作成日時 >= LAST_MONTH() limit 500 offset ' + toOffset;
-						const to_response_2 = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', to_compare);
-						console.log(to_response_2);
-						to_records.push(...to_response_2.records);
+					while (count_of_pastRecords > offset_of_pastRecords) {
+						offset_of_pastRecords += 500;
+						// console.log("offset: " + offset_of_pastRecords);
+						api_of_pastRecordsObject.query = '重複確認 not in ("重複あり") and 作成日時 >= LAST_MONTH() limit 500 offset ' + offset_of_pastRecords;
+						// console.log("api_of_pastRecordsObject: " + JSON.stringify(api_of_pastRecordsObject));
+						const temp_of_pastRecordsObject = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', api_of_pastRecordsObject);
+						// console.log("temp_of_pastRecordsObject: " + JSON.stringify(temp_of_pastRecordsObject));
+						pastRecords.push(...temp_of_pastRecordsObject.records);
+						// console.log("pastRecords: " + JSON.stringify(pastRecords));
 					}
 				}
 
 				console.log("from_records:");
+				console.log(todayRecords);
 				console.log("to_records: ");
-				console.log(from_records);
-				console.log(to_records);
-				console.log("from_totalCount: " + from_totalCount);
-				console.log("to_totalCount: " + to_totalCount);
-
+				console.log(pastRecords);
+				console.log("from_totalCount: " + count_of_todayRecords);
+				console.log("to_totalCount: " + count_of_pastRecords);
 
 				// 比較元クエリの返り値のレコード数が0件の場合
-				if (from_totalCount === 0) {
+				if (count_of_todayRecords === 0) {
 					alert("重複確認対象のレコードが0件です。");
 					return;
 				}
 				// 警告を表示
-				if (!confirm(from_totalCount + "件のレコードを直近1ヶ月のレコード " + to_totalCount + "件と比較します。よろしいですか？")) {
+				if (!confirm(count_of_todayRecords + "件のレコードを直近1ヶ月のレコード " + count_of_pastRecords + "件と比較します。よろしいですか？")) {
 					return;
 				}
 
+				// todayRecordsのレコード数分ループ処理を行う
 
 
 			}
