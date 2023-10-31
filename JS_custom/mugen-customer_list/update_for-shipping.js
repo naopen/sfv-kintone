@@ -34,6 +34,12 @@
             condition.fromStatus +
             '" limit 100',
         };
+
+        if (!event.size) {
+          alert('レコードがありません');
+          return;
+        }
+
         kintone
           .api(getUrl, "GET", getBody)
           .then(function (resp) {
