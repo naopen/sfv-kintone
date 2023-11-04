@@ -14,6 +14,43 @@
     myIndexButton.innerText = "【AIR-U解約予定】にする";
     myIndexButton.className = "kintoneplugin-button-normal";
 
+    // OKを押したらtrueを返し、キャンセルを押したらfalseを返す　←になっていない
+    // 呼ばれた時点でtrueを返しているので変更する必要がある
+    function showInfo(title, message) {
+      return Swal.fire({
+        title: title,
+        html: message,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3498db',
+        width: 'auto',
+        heightAuto: true
+      })
+    }
+
+    function showSuccess(title, message) {
+      Swal.fire({
+        title: title,
+        html: message,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3498db',
+        width: 'auto',
+        heightAuto: true
+      })
+    }
+
+    function showAlert(title, message) {
+      Swal.fire({
+        title: title,
+        html: message,
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3498db',
+        width: 'auto',
+        heightAuto: true
+      });
+    }
+
     // ボタンクリック時の処理
     myIndexButton.onclick = () => {
       javascript: (function () {
@@ -46,19 +83,21 @@
               putBody.records.push({ id: id, action: condition.doAction });
             }),
               console.log(putBody);
-            let message =
-              "　　　　＊ " +
+            // もし件数が0件なら.catch(function (error) に飛ぶ
+            if (ids.length === 0) {
+              throw new Error("ステータスを更新する端末がありません");
+            }
+            let title =
               ids.length +
-              "台＊\n\nの端末のステータス更新をします。よろしいですか？\n\n⚠注意！　同時実行最大数は100台です。⚠\n⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤\n";
-            (message +=
-              myIndexButton.innerText +
-              // "\n　現在のステータス：" +
-              // condition.fromStatus),
-              "\n　現在のステータス：" +
-              condition.fromStatus),
-              (message += "\n　実行アクション：" + condition.doAction);
-            const result = window.confirm(message);
-            return result ? kintone.api(putUrl, "PUT", putBody) : reject();
+              "台の端末の<br>ステータス更新をします。<br>よろしいですか？",
+              message = "⚠注意！　同時実行最大数は100台です。⚠<hr><br>実行アクション：" + condition.doAction;
+            const result = showInfo(title, message);
+            // sweetalertの結果がOKならステータス更新、キャンセルなら .catch(function (error)に飛ぶ
+            if (result) {
+              return kintone.api(putUrl, "PUT", putBody);
+            } else {
+              throw new Error("キャンセルが選択されました");
+            }
           })
           .then(function (resp) {
             // ステータス更新後の処理
@@ -85,15 +124,12 @@
           })
           .then(function (resp) {
             console.log(resp),
-              alert(
-                "ステータスの一括更新が完了しました\n\n⚠注意！⚠　101台以上の端末がある場合は再度同じ操作を実行してください"
-              ),
-              window.location.reload();
+              showSuccess("ステータスの一括更新が完了しました", "⚠注意！⚠　101台以上の端末がある場合は再度同じ操作を実行してください");
+            window.location.reload();
           })
           .catch(function (error) {
             // エラー内容を表示
-            console.log(error), alert(error.message);
-            alert("処理を中断しました。");
+            console.log(error), showAlert(error.message, "処理を中断しました。");
           });
       })();
     };
