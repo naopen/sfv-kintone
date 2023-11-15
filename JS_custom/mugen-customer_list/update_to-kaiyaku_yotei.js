@@ -88,10 +88,11 @@
             currentQuery +
             'limit 100',
         };
-        // デバッグ用にqueryを出力
-        console.log(getBody.query);
+        console.log("クエリ：" + getBody.query);
         kintone
+          // レコード一覧取得
           .api(getUrl, "GET", getBody)
+          // レコード一覧取得成功時の処理 
           .then(function (resp) {
             const ids = resp.records.map(function (record) {
               return record.$id.value;
@@ -101,7 +102,7 @@
               putBody.records.push({ id: id, action: condition.doAction });
             }),
               console.log(putBody);
-            // もし件数が0件なら.catch(function (error) に飛ぶ
+            // もし件数が0件ならエラーを新しく投げる
             if (ids.length === 0) {
               throw new Error("ステータスを更新する端末がありません");
             }
@@ -109,46 +110,47 @@
               ids.length +
               "台の端末の<br>ステータス更新をします。<br>よろしいですか？",
               message = "⚠注意！　同時実行最大数は100台です。⚠<hr><br>実行アクション：" + condition.doAction;
+            // ステータス更新の確認処理
             showInfo(title, message).then(() => {
               return kintone.api(putUrl, "PUT", putBody);
-            }).then(function (resp) {
-              // ステータス更新後の処理
-              // 処理はステータス更新した全てのレコードに対して行う
-              // Before: チェックボックス「（何か）→ AIR-U解約予定」の「実行する」チェックが入っている
-              // After: チェックボックス「（何か）→ AIR-U解約予定」の「実行する」チェックが外れている
-              const putBody = {
-                app: kintone.app.getId(),
-                records: [],
-              };
-              resp.records.forEach(function (record) {
-                putBody.records.push({
-                  id: record.id,
-                  record: {
-                    "to_AIR_U解約予定": {
-                      value: [],
-                    },
-                  },
-                });
-              });
-              console.log(putBody);
-              const putUrl = kintone.api.url("/k/v1/records", !0);
-              return kintone.api(putUrl, "PUT", putBody);
             })
+              // OKボタン押下でステータス更新を実行
+              // ステータス更新成功時 (その1) 一括更新が成功したら、チェックボックスを外す
+              .then(function (resp) {
+                const putBody = {
+                  app: kintone.app.getId(),
+                  records: [],
+                };
+                resp.records.forEach(function (record) {
+                  putBody.records.push({
+                    id: record.id,
+                    record: {
+                      "to_AIR_U解約予定": {
+                        value: [],
+                      },
+                    },
+                  });
+                });
+                console.log(putBody);
+                const putUrl = kintone.api.url("/k/v1/records", !0);
+                return kintone.api(putUrl, "PUT", putBody);
+              })
+              // ステータス更新成功時 (その2) 成功メッセージを表示
               .then(function (resp) {
                 console.log(resp);
                 showSuccess("ステータスの一括更新が完了しました", "⚠注意！⚠　101台以上の端末がある場合は再度同じ操作を実行してください").then(() => {
                   window.location.reload();
                 });
               })
+              // ステータス更新失敗時の処理 一括更新が失敗したら、エラーメッセージを表示
               .catch(function (error) {
-                // エラー内容を表示
-                console.log("エラー内容：" + error.message);
+                console.log("ステータス更新失敗：" + error.message);
                 showAlert(error.message, "処理を中断しました。");
               });
           })
+          // レコード一覧取得失敗時の処理
           .catch(function (error) {
-            // エラー内容を表示
-            console.log("エラー内容：" + error.message);
+            console.log("レコード一覧取得失敗：" + error.message);
             showAlert(error.message, "処理を中断しました。");
           });
       })();
