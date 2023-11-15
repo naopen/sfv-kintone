@@ -3,10 +3,10 @@
 
 	kintone.events.on("app.record.edit.submit", (event) => {
 
-		// // 解約申請受付日に値が入っていれば処理を実行
-		// if (!event.record["解約申請受付日"].value) {
-		// 	return;
-		// }
+		// 解約申請受付日に値が入っていれば処理を実行
+		if (!event.record["解約申請受付日"].value) {
+			return;
+		}
 
 		// ラジオボタン (ID: autoOrManual) の値が「手動入力」なら処理を中断
 		if (event.record["autoOrManual"].value === "手動入力") {

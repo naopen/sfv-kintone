@@ -23,7 +23,11 @@
         confirmButtonText: 'OK',
         confirmButtonColor: '#3498db',
         width: 'auto',
-        heightAuto: true
+        heightAuto: true,
+        showCancelButton: true,
+        cancelButtonText: 'キャンセル',
+        cancelButtonColor: '#d33',
+        allowOutsideClick: false
       })
     }
 
@@ -93,7 +97,7 @@
               message = "⚠注意！　同時実行最大数は100台です。⚠<hr><br>実行アクション：" + condition.doAction;
             const result = showInfo(title, message);
             // sweetalertの結果がOKならステータス更新、キャンセルなら .catch(function (error)に飛ぶ
-            if (result) {
+            if (result.isConfirmed) {
               return kintone.api(putUrl, "PUT", putBody);
             } else {
               throw new Error("キャンセルが選択されました");
