@@ -14,8 +14,6 @@
     myIndexButton.innerText = "【AIR-U解約予定】にする";
     myIndexButton.className = "kintoneplugin-button-normal";
 
-    // OKを押したらtrueを返し、キャンセルを押したらfalseを返す　←になっていない
-    // 呼ばれた時点でtrueを返しているので変更する必要がある
     function showInfo(title, message) {
       return new Promise((resolve, reject) => {
         Swal.fire({
@@ -137,7 +135,7 @@
               return kintone.api(putUrl, "PUT", putBody);
             })
               .then(function (resp) {
-                console.log("成功！");
+                console.log(resp);
                 showSuccess("ステータスの一括更新が完了しました", "⚠注意！⚠　101台以上の端末がある場合は再度同じ操作を実行してください").then(() => {
                   window.location.reload();
                 });
@@ -148,6 +146,11 @@
                 showAlert(error.message, "処理を中断しました。");
               });
           })
+          .catch(function (error) {
+            // エラー内容を表示
+            console.log("エラー内容：" + error.message);
+            showAlert(error.message, "処理を中断しました。");
+          });
       })();
     };
 
