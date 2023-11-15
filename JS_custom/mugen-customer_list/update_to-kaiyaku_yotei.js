@@ -17,30 +17,46 @@
     // OKを押したらtrueを返し、キャンセルを押したらfalseを返す　←になっていない
     // 呼ばれた時点でtrueを返しているので変更する必要がある
     function showInfo(title, message) {
-      return Swal.fire({
-        title: title,
-        html: message,
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#3498db',
-        width: 'auto',
-        heightAuto: true,
-        showCancelButton: true,
-        cancelButtonText: 'キャンセル',
-        cancelButtonColor: '#d33',
-        allowOutsideClick: false
-      })
+      return new Promise((resolve, reject) => {
+        Swal.fire({
+          title: title,
+          html: message,
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3498db',
+          width: 'auto',
+          heightAuto: true,
+          showCancelButton: true,
+          cancelButtonText: 'キャンセル',
+          cancelButtonColor: '#d33',
+          allowOutsideClick: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            resolve(true);
+          } else {
+            reject(new Error("キャンセルが選択されました"));
+          }
+        }
+        );
+      });
     }
 
     function showSuccess(title, message) {
-      Swal.fire({
-        title: title,
-        html: message,
-        icon: 'success',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#3498db',
-        width: 'auto',
-        heightAuto: true
-      })
+      return new Promise((resolve) => {
+        Swal.fire({
+          title: title,
+          html: message,
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3498db',
+          width: 'auto',
+          heightAuto: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            resolve(true);
+          }
+        });
+      }
+      );
     }
 
     function showAlert(title, message) {
@@ -95,46 +111,43 @@
               ids.length +
               "台の端末の<br>ステータス更新をします。<br>よろしいですか？",
               message = "⚠注意！　同時実行最大数は100台です。⚠<hr><br>実行アクション：" + condition.doAction;
-            const result = showInfo(title, message);
-            // sweetalertの結果がOKならステータス更新、キャンセルなら .catch(function (error)に飛ぶ
-            if (result.isConfirmed) {
+            showInfo(title, message).then(() => {
               return kintone.api(putUrl, "PUT", putBody);
-            } else {
-              throw new Error("キャンセルが選択されました");
-            }
-          })
-          .then(function (resp) {
-            // ステータス更新後の処理
-            // 処理はステータス更新した全てのレコードに対して行う
-            // Before: チェックボックス「（何か）→ AIR-U解約予定」の「実行する」チェックが入っている
-            // After: チェックボックス「（何か）→ AIR-U解約予定」の「実行する」チェックが外れている
-            const putBody = {
-              app: kintone.app.getId(),
-              records: [],
-            };
-            resp.records.forEach(function (record) {
-              putBody.records.push({
-                id: record.id,
-                record: {
-                  "to_AIR_U解約予定": {
-                    value: [],
+            }).then(function (resp) {
+              // ステータス更新後の処理
+              // 処理はステータス更新した全てのレコードに対して行う
+              // Before: チェックボックス「（何か）→ AIR-U解約予定」の「実行する」チェックが入っている
+              // After: チェックボックス「（何か）→ AIR-U解約予定」の「実行する」チェックが外れている
+              const putBody = {
+                app: kintone.app.getId(),
+                records: [],
+              };
+              resp.records.forEach(function (record) {
+                putBody.records.push({
+                  id: record.id,
+                  record: {
+                    "to_AIR_U解約予定": {
+                      value: [],
+                    },
                   },
-                },
+                });
               });
-            });
-            console.log(putBody);
-            const putUrl = kintone.api.url("/k/v1/records", !0);
-            return kintone.api(putUrl, "PUT", putBody);
+              console.log(putBody);
+              const putUrl = kintone.api.url("/k/v1/records", !0);
+              return kintone.api(putUrl, "PUT", putBody);
+            })
+              .then(function (resp) {
+                console.log("成功！");
+                showSuccess("ステータスの一括更新が完了しました", "⚠注意！⚠　101台以上の端末がある場合は再度同じ操作を実行してください").then(() => {
+                  window.location.reload();
+                });
+              })
+              .catch(function (error) {
+                // エラー内容を表示
+                console.log("エラー内容：" + error.message);
+                showAlert(error.message, "処理を中断しました。");
+              });
           })
-          .then(function (resp) {
-            console.log(resp),
-              showSuccess("ステータスの一括更新が完了しました", "⚠注意！⚠　101台以上の端末がある場合は再度同じ操作を実行してください");
-            window.location.reload();
-          })
-          .catch(function (error) {
-            // エラー内容を表示
-            console.log(error), showAlert(error.message, "処理を中断しました。");
-          });
       })();
     };
 
