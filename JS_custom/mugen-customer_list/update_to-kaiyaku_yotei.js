@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   kintone.events.on("app.record.index.show", (event) => {
-    if (event.viewName !== "（全てのステータス）▶▶AIR-U解約予定") {
+    if (event.viewName !== "（現在のステータス）▶▶AIR-U解約予定") {
       return;
     }
 
