@@ -6,7 +6,7 @@
 
 	kintone.events.on(["portal.show"], function (event) {
 		if (showDialog !== today) {
-			const text = "確認してから業務開始してください<br>(=^・・^=)<br><br>下のチェックを入れて開くと<br>「このブラウザでは」<br>今日は再表示されません<br>"
+			const text = "確認してから業務開始してください<br>(=^・・^=)<br><br>下のチェックを入れて確認すると<br>「このブラウザでは」<br>今日は再表示されません<br>"
 
 			// document.createElementでチェックボックスを作成
 			const checkbox = document.createElement("input");
@@ -41,7 +41,7 @@
 				footer: "Portal System Developed by: Naoki Kannan",
 				showConfirmButton: true,
 				showCancelButton: false,
-				showCloseButton: false,
+				showCloseButton: true,
 				confirmButtonText: "確認する！",
 				cancelButtonText: "キャンセル",
 				confirmButtonColor: "#0DAC93",
@@ -50,6 +50,20 @@
 				// timerProgressBar: true,
 				allowOutsideClick: false,
 				allowEscapeKey: false,
+				didOpen: () => {
+					// カスタムクローズボタンの動作を設定
+					const closeButton = document.querySelector('.swal2-close');
+					closeButton.onclick = null; // 既存のクリックイベントを削除
+					closeButton.addEventListener('click', function (e) {
+						if (!e.shiftKey) {
+							// Shiftキーが押されていない場合、メッセージを表示
+							Swal.showValidationMessage("Shiftキーを押しながら閉じるボタンを押してください");
+						} else {
+							// Shiftキーが押されている場合、ダイアログを閉じる
+							Swal.close();
+						}
+					});
+				},
 			});
 			Swal.update({
 				buttonsStyling: true,
@@ -60,7 +74,7 @@
 			const searchBtn = document.createElement("button");
 			searchBtn.classList.add("btn", "btn-lg", "btn-secondary", "mx-2");
 			searchBtn.classList.add("swal2-styled", "swal2-confirm");
-			searchBtn.textContent = "全体検索";
+			searchBtn.textContent = "全体検索する";
 			searchBtn.style.backgroundColor = "#84919e";
 			searchBtn.style.color = "#fff";
 
@@ -107,23 +121,6 @@
 
 			const confirmButton = document.querySelector(".swal2-confirm");
 			confirmButton.insertAdjacentElement("afterend", searchBtn);
-
-			// 'DC事業部ではないので確認しない' ボタンを作成
-			const noDCBtn = document.createElement("button");
-			noDCBtn.classList.add("btn", "btn-lg", "mx-2");
-			noDCBtn.classList.add("swal2-styled", "swal2-confirm");
-			noDCBtn.textContent = "確認しない";
-			noDCBtn.style.backgroundColor = "#c8c8cb";
-			noDCBtn.style.color = "#fff";
-
-			noDCBtn.addEventListener("click", function () {
-				// ボタンがクリックされた時の動作をここに記述します
-				// 例: 確認ダイアログを閉じる
-				Swal.close();
-			});
-
-			// '全体検索する' ボタンの後に 'DC事業部ではないので確認しない' ボタンを追加
-			searchBtn.insertAdjacentElement("afterend", noDCBtn);
 
 			function openNewTab(url) {
 				const a = document.createElement("a");
