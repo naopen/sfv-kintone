@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   kintone.events.on("app.record.index.show", (event) => {
-    if (event.viewName !== "在庫端末▶▶顧客使用中（新規発送用）") {
+    if (event.viewName !== "（現在のステータス）▶▶AIR-U解約予定") {
       return;
     }
 
@@ -11,7 +11,7 @@
 
     const myIndexButton = document.createElement("button");
     myIndexButton.id = "my_index_button";
-    myIndexButton.innerText = "【顧客使用中端末】にする";
+    myIndexButton.innerText = "【AIR-U解約予定】にする";
     myIndexButton.className = "kintoneplugin-button-normal";
 
     function showInfo(title, message) {
@@ -73,7 +73,7 @@
     myIndexButton.onclick = () => {
       javascript: (function () {
         // 更新前ステータスは指定しない
-        const doAction = "顧客使用中端末にする",
+        const doAction = "AIR-U解約予定にする",
           // fromStatus = "在庫端末",
           // condition = { fromStatus: fromStatus, doAction: doAction },
           condition = { doAction: doAction },
