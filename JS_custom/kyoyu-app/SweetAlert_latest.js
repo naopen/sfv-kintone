@@ -60,7 +60,7 @@
 			const searchBtn = document.createElement("button");
 			searchBtn.classList.add("btn", "btn-lg", "btn-secondary", "mx-2");
 			searchBtn.classList.add("swal2-styled", "swal2-confirm");
-			searchBtn.textContent = "全体検索する";
+			searchBtn.textContent = "全体検索";
 			searchBtn.style.backgroundColor = "#84919e";
 			searchBtn.style.color = "#fff";
 
@@ -107,6 +107,23 @@
 
 			const confirmButton = document.querySelector(".swal2-confirm");
 			confirmButton.insertAdjacentElement("afterend", searchBtn);
+
+			// 'DC事業部ではないので確認しない' ボタンを作成
+			const noDCBtn = document.createElement("button");
+			noDCBtn.classList.add("btn", "btn-lg", "mx-2");
+			noDCBtn.classList.add("swal2-styled", "swal2-confirm");
+			noDCBtn.textContent = "確認しない";
+			noDCBtn.style.backgroundColor = "#c8c8cb";
+			noDCBtn.style.color = "#fff";
+
+			noDCBtn.addEventListener("click", function () {
+				// ボタンがクリックされた時の動作をここに記述します
+				// 例: 確認ダイアログを閉じる
+				Swal.close();
+			});
+
+			// '全体検索する' ボタンの後に 'DC事業部ではないので確認しない' ボタンを追加
+			searchBtn.insertAdjacentElement("afterend", noDCBtn);
 
 			function openNewTab(url) {
 				const a = document.createElement("a");
