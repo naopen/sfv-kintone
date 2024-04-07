@@ -115,26 +115,28 @@
               return kintone.api(putUrl, "PUT", putBody);
             })
               // OKボタン押下でステータス更新を実行
-              // ステータス更新成功時 (その1) 一括更新が成功したら、チェックボックスを外す
-              .then(function (resp) {
-                const putBody = {
-                  app: kintone.app.getId(),
-                  records: [],
-                };
-                resp.records.forEach(function (record) {
-                  putBody.records.push({
-                    id: record.id,
-                    record: {
-                      "to_AIR_U解約予定": {
-                        value: [],
-                      },
-                    },
-                  });
-                });
-                console.log(putBody);
-                const putUrl = kintone.api.url("/k/v1/records", !0);
-                return kintone.api(putUrl, "PUT", putBody);
-              })
+              //
+              // // ステータス更新成功時 (その1) 一括更新が成功したら、チェックボックスを外す
+              // .then(function (resp) {
+              //   const putBody = {
+              //     app: kintone.app.getId(),
+              //     records: [],
+              //   };
+              //   resp.records.forEach(function (record) {
+              //     putBody.records.push({
+              //       id: record.id,
+              //       record: {
+              //         "to_AIR_U解約予定": {
+              //           value: [],
+              //         },
+              //       },
+              //     });
+              //   });
+              //   console.log(putBody);
+              //   const putUrl = kintone.api.url("/k/v1/records", !0);
+              //   return kintone.api(putUrl, "PUT", putBody);
+              // })
+              //
               // ステータス更新成功時 (その2) 成功メッセージを表示
               .then(function (resp) {
                 console.log(resp);
