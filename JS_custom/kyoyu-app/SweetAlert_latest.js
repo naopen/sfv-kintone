@@ -137,9 +137,6 @@
 				});
 			});
 
-			const searchButton = document.querySelector(".swal2-confirm");
-			searchButton.insertAdjacentElement("afterend", searchBtn);
-
 			const dxCheckBtn = document.createElement("button");
 			dxCheckBtn.classList.add("btn", "btn-lg", "btn-secondary", "mx-2");
 			dxCheckBtn.classList.add("swal2-styled", "swal2-confirm");
@@ -161,6 +158,9 @@
 
 			const dxCheckButton = document.querySelector(".swal2-confirm");
 			dxCheckButton.insertAdjacentElement("afterend", dxCheckBtn);
+
+			const searchButton = document.querySelector(".swal2-confirm");
+			searchButton.insertAdjacentElement("afterend", searchBtn);
 
 			function openNewTab(url) {
 				const a = document.createElement("a");
