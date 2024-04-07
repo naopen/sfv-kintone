@@ -125,7 +125,7 @@
                   putBody.records.push({
                     id: record.id,
                     record: {
-                      "to_AIR_U解約予定": {
+                      "to_AIR_U解約済": {
                         value: [],
                       },
                     },

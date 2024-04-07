@@ -51,6 +51,7 @@
 				allowOutsideClick: false,
 				allowEscapeKey: false,
 				didOpen: () => {
+					document.getElementById("no-show-today").checked = true;
 					// カスタムクローズボタンの動作を設定
 					const closeButton = document.querySelector('.swal2-close');
 					closeButton.onclick = null; // 既存のクリックイベントを削除
