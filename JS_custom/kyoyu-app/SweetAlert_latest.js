@@ -6,7 +6,7 @@
 
 	kintone.events.on(["portal.show"], function (event) {
 		if (showDialog !== today) {
-			const text = "確認してから業務開始してください<br>(=^・・^=)<br><br>下のチェックを入れて確認すると<br>「このブラウザでは」<br>今日は再表示されません<br>"
+			const text = "確認してから業務開始してください<br>(=^・・^=)<br><br>下のチェックを入れて確認すると<br>「このブラウザでは」<br>今日はダイアログが再表示されません<br>"
 
 			// document.createElementでチェックボックスを作成
 			const checkbox = document.createElement("input");
@@ -38,7 +38,7 @@
 				title: "<strong><u>共有事項&ミス管理 確認OK?</u></strong>",
 				html: text + check.outerHTML,
 				padding: "1.5rem",
-				footer: "Portal System Developed by: Naoki Kannan",
+				footer: "Kintone Portal System Developed by: Naoki Kannan",
 				showConfirmButton: true,
 				showCancelButton: false,
 				showCloseButton: true,
