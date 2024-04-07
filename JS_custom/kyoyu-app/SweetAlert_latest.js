@@ -6,7 +6,7 @@
 
 	kintone.events.on(["portal.show"], function (event) {
 		if (showDialog !== today) {
-			const text = "確認してから業務開始してください<br>(=^・・^=)<br><br>下のチェックを入れて確認すると<br>「このブラウザでは」<br>今日はダイアログが再表示されません<br>"
+			const text = "確認してから業務開始してください<br>(=^・・^=)<br><br>下のチェックを入れたまま確認すると<br>「このブラウザでは」<br>今日はダイアログが再表示されません<br>"
 
 			// document.createElementでチェックボックスを作成
 			const checkbox = document.createElement("input");
@@ -35,14 +35,14 @@
 				imageWidth: 200,
 				imageHeight: 150,
 				imageAlt: "OSUSHI image",
-				title: "<strong><u>共有事項&ミス管理 確認OK?</u></strong>",
+				title: "<strong><u>共有確認OK?</u></strong>",
 				html: text + check.outerHTML,
 				padding: "1.5rem",
-				footer: "Kintone Portal System Developed by: Naoki Kannan",
+				footer: "Kintone Portal System Developed By: Naoki Kannan",
 				showConfirmButton: true,
 				showCancelButton: false,
 				showCloseButton: true,
-				confirmButtonText: "確認する！",
+				confirmButtonText: "[CS部]確認！",
 				cancelButtonText: "キャンセル",
 				confirmButtonColor: "#0DAC93",
 				cancelButtonColor: "#d33",
@@ -72,10 +72,23 @@
 				cancelButtonClass: "btn btn-lg btn-danger mx-2",
 			});
 
+			document
+				.querySelector(".swal2-confirm")
+				.addEventListener("click", function () {
+					if (document.getElementById("no-show-today").checked) {
+						localStorage.setItem("showDialog", today);
+					}
+					// 新しいタブを開く
+					openNewTab("https://freedive.cybozu.com/k/260/");
+					openNewTab("https://freedive.cybozu.com/k/84/");
+					// 同じタブで開く
+					// window.location.href = "https://freedive.cybozu.com/k/84/";
+				});
+
 			const searchBtn = document.createElement("button");
 			searchBtn.classList.add("btn", "btn-lg", "btn-secondary", "mx-2");
 			searchBtn.classList.add("swal2-styled", "swal2-confirm");
-			searchBtn.textContent = "全体検索する";
+			searchBtn.textContent = "全体検索";
 			searchBtn.style.backgroundColor = "#84919e";
 			searchBtn.style.color = "#fff";
 
@@ -83,9 +96,9 @@
 				Swal.fire({
 					icon: "info",
 					// （右上の検索欄と同じ機能です）だけ文字を小さくする
-					title: "kintoneを全体検索する<br><small>（右上の検索欄と同じ機能です）</small>",
+					title: "kintone全体検索<br><small>（右上の検索欄と同じ機能です）</small>",
 					input: "text",
-					inputPlaceholder: "キーワードを入力してください",
+					inputPlaceholder: "キーワードを入力",
 					showCancelButton: true,
 					confirmButtonText: "検索",
 					cancelButtonText: "キャンセル",
@@ -120,8 +133,30 @@
 				});
 			});
 
-			const confirmButton = document.querySelector(".swal2-confirm");
-			confirmButton.insertAdjacentElement("afterend", searchBtn);
+			const searchButton = document.querySelector(".swal2-confirm");
+			searchButton.insertAdjacentElement("afterend", searchBtn);
+
+			const dxCheckBtn = document.createElement("button");
+			dxCheckBtn.classList.add("btn", "btn-lg", "btn-secondary", "mx-2");
+			dxCheckBtn.classList.add("swal2-styled", "swal2-confirm");
+			dxCheckBtn.textContent = "[DX部]確認！";
+			dxCheckBtn.style.backgroundColor = "#990099";
+			dxCheckBtn.style.color = "#fff";
+
+			dxCheckBtn.addEventListener("click", function () {
+				if (document.getElementById("no-show-today").checked) {
+					localStorage.setItem("showDialog", today);
+				}
+				// 新しいタブを開く
+				openNewTab("https://freedive.cybozu.com/k/391/");
+				openNewTab("https://freedive.cybozu.com/k/390/");
+				openNewTab("https://freedive.cybozu.com/k/323/");
+				Swal.close();
+			}
+			);
+
+			const dxCheckButton = document.querySelector(".swal2-confirm");
+			dxCheckButton.insertAdjacentElement("afterend", dxCheckBtn);
 
 			function openNewTab(url) {
 				const a = document.createElement("a");
@@ -137,18 +172,7 @@
 				a.dispatchEvent(event);
 			}
 
-			document
-				.querySelector(".swal2-confirm")
-				.addEventListener("click", function () {
-					if (document.getElementById("no-show-today").checked) {
-						localStorage.setItem("showDialog", today);
-					}
-					// 新しいタブを開く
-					openNewTab("https://freedive.cybozu.com/k/260/");
-					openNewTab("https://freedive.cybozu.com/k/84/");
-					// 同じタブで開く
-					// window.location.href = "https://freedive.cybozu.com/k/84/";
-				});
+
 		}
 
 	});
