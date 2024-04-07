@@ -57,8 +57,12 @@
 					closeButton.onclick = null; // 既存のクリックイベントを削除
 					closeButton.addEventListener('click', function (e) {
 						if (!e.shiftKey) {
-							// Shiftキーが押されていない場合、メッセージを表示
-							Swal.showValidationMessage("Shiftキーを押しながら閉じるボタンを押してください");
+							// 2秒待つ
+							setTimeout(() => {
+								// Shiftキーが押されていない場合、メッセージを表示
+								Swal.showValidationMessage("Shiftキーを押しながら閉じるボタンを押してください");
+							}, 2000);
+							Swal.showValidationMessage("確認しましたか？");
 						} else {
 							// Shiftキーが押されている場合、ダイアログを閉じる
 							Swal.close();
