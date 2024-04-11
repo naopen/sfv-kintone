@@ -61,7 +61,7 @@
 							setTimeout(() => {
 								// Shiftキーが押されていない場合、メッセージを表示
 								Swal.showValidationMessage("Shiftキーを押しながら閉じるボタンを押してください");
-							}, 2000);
+							}, 5000);
 							Swal.showValidationMessage("確認しましたか？");
 						} else {
 							// Shiftキーが押されている場合、ダイアログを閉じる
