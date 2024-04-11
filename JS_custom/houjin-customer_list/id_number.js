@@ -19,6 +19,7 @@ const FIELD_CODE = 'record_No_';
         const search_button = document.createElement('button');
         search_button.innerHTML = '検索';
         search_button.style.padding = '5px 15px';
+        search_button.style.marginRight = '10px';
         search_button.style.border = 'none';
         search_button.style.borderRadius = '4px';
         search_button.style.backgroundColor = '#007bff';
