@@ -1,7 +1,14 @@
 (() => {
   "use strict";
   kintone.events.on("app.record.index.show", (event) => {
-    if (event.viewName !== "（現在のステータス）▶▶AIR-U解約予定") {
+    // ステータス名
+    const statusName = "AIR-U解約予定";
+    const fieldCode = {
+      // フィールドコード
+      updatedStatus: "to_AIR_U解約予定",
+    }
+
+    if (event.viewName !== "（現在のステータス）▶▶" + statusName) {
       return;
     }
 
@@ -11,7 +18,7 @@
 
     const myIndexButton = document.createElement("button");
     myIndexButton.id = "my_index_button";
-    myIndexButton.innerText = "【AIR-U解約予定】にする";
+    myIndexButton.innerText = "【" + statusName + "】にする";
     myIndexButton.className = "kintoneplugin-button-normal";
 
     function showInfo(title, message) {
@@ -73,7 +80,7 @@
     myIndexButton.onclick = () => {
       javascript: (function () {
         // 更新前ステータスは指定しない
-        const doAction = "AIR-U解約予定にする",
+        const doAction = statusName + "にする",
           // fromStatus = "在庫端末",
           // condition = { fromStatus: fromStatus, doAction: doAction },
           condition = { doAction: doAction },
@@ -125,7 +132,7 @@
                   putBody.records.push({
                     id: record.id,
                     record: {
-                      "to_AIR_U解約予定": {
+                      [fieldCode.updatedStatus]: {
                         value: [],
                       },
                     },
