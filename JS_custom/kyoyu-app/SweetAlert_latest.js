@@ -56,15 +56,16 @@
 					const closeButton = document.querySelector('.swal2-close');
 					closeButton.onclick = null; // 既存のクリックイベントを削除
 					closeButton.addEventListener('click', function (e) {
-						if (!e.ctrlKey || !e.shiftKey) {
-							// Ctrl+Shiftキーが押されていない場合、ダイアログを閉じずにメッセージを表示
+						// CtrlまたはCmdキーとShiftキーが押されているかどうかをチェック
+						if (!((e.ctrlKey || e.metaKey) && e.shiftKey)) {
+							// Ctrl+ShiftキーまたはCmd+Shiftキーが押されていない場合、ダイアログを閉じずにメッセージを表示
 							setTimeout(() => {
 								// 指定秒数後に1つ目のメッセージを表示
-								Swal.showValidationMessage("Ctrl+Shiftキーを押しながら閉じるボタンを押下");
+								Swal.showValidationMessage("Ctrl+ShiftまたはCmd+Shiftキーを押しながら閉じる");
 							}, 4750);
 							Swal.showValidationMessage("確認しましたか？");
 						} else {
-							// Ctrl+Shiftキーが押されている場合、ダイアログを閉じる
+							// Ctrl+ShiftキーまたはCmd+Shiftキーが押されている場合、ダイアログを閉じる
 							Swal.close();
 						}
 					});
