@@ -17,3 +17,8 @@ input[type="checkbox"][id="no-show-today"]:checked + label:before {
   content: "\f046";
   letter-spacing: 5px;
 } /* checked icon */
+
+/* SweetAlert2のフッターのスタイルをより具体的なセレクタで上書き */
+.swal2-container .swal2-footer.swal2-footer-custom {
+  font-size: 12px; /* 希望の文字サイズに調整 */
+}

@@ -50,6 +50,9 @@
 				// timerProgressBar: true,
 				allowOutsideClick: false,
 				allowEscapeKey: false,
+				customClass: {
+					footer: "swal2-footer-custom",
+				},
 				didOpen: () => {
 					document.getElementById("no-show-today").checked = true;
 					// カスタムクローズボタンの動作を設定
