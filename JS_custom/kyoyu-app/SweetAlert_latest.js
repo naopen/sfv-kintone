@@ -38,7 +38,7 @@
 				title: "<strong><u>共有確認OK?</u></strong>",
 				html: text + check.outerHTML,
 				padding: "1.5rem",
-				footer: "Kintone Portal System Developed By: Naoki Kannan",
+				footer: "Portal System Developed By Naoki Kannan",
 				showConfirmButton: true,
 				showCancelButton: false,
 				showCloseButton: true,
