@@ -50,7 +50,7 @@ jTis.noConflict();
 			'margin': '0px',
 			'padding': '1.25px',
 			'position': 'fixed',
-			'width': '120px',
+			'width': '117px',
 			'z-index': '999999'
 		});
 		$('body').append(

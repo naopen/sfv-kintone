@@ -3,9 +3,9 @@
   "version": 1,
   "type": "APP",
   "name": {
-    "ja": "[5G] kintone 選択で検索プラグイン (Dev by KANNAN)",
-    "en": "[5G] kintone text Search plug-in (Dev by KANNAN)",
-    "zh": "[5G] kintone 選択で検索プラグイン (Dev by KANNAN)"
+    "ja": "[5G] kintone 選択で検索プラグイン ver.2 (Dev by KANNAN)",
+    "en": "[5G] kintone text Search plug-in ver.2 (Dev by KANNAN)",
+    "zh": "[5G] kintone 選択で検索プラグイン ver.2 (Dev by KANNAN)"
   },
   "description": {
     "ja": "範囲指定したテキストに対し、検索を行うプラグインです。",
