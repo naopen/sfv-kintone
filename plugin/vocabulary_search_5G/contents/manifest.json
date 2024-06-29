@@ -1,0 +1,47 @@
+{
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "name": {
+    "ja": "[5G] kintone 選択で検索プラグイン (Dev by KANNAN)",
+    "en": "[5G] kintone text Search plug-in (Dev by KANNAN)",
+    "zh": "[5G] kintone 選択で検索プラグイン (Dev by KANNAN)"
+  },
+  "description": {
+    "ja": "範囲指定したテキストに対し、検索を行うプラグインです。",
+    "en": "This plug-in searches text on a specified range",
+    "zh": "範囲指定したテキストに対し、検索を行うプラグインです。"
+  },
+  "icon": "image/icon.png",
+  "homepage_url": {
+    "ja": "http://www.tis2010.jp/",
+    "en": "http://www.tis2010.jp/",
+    "zh": "http://www.tis2010.jp/"
+  },
+  "desktop": {
+    "js": [
+      "https://cdn.jsdelivr.net/gh/TIS2010/static/kintone/jquery-tis.js",
+      "https://cdn.jsdelivr.net/gh/TIS2010/static/kintone/tis.js",
+      "https://cdn.jsdelivr.net/gh/TIS2010/static/kintone/sweetalert.min.js",
+      "js/vocabularysearch.js"
+    ]
+  },
+  "mobile": {
+    "js": [
+      "https://cdn.jsdelivr.net/gh/TIS2010/static/kintone/jquery-tis.js",
+      "https://cdn.jsdelivr.net/gh/TIS2010/static/kintone/tis.js",
+      "https://cdn.jsdelivr.net/gh/TIS2010/static/kintone/sweetalert.min.js",
+      "js/vocabularysearch.js"
+    ]
+  },
+  "config": {
+    "html": "html/config.html",
+    "js": [
+      "https://cdn.jsdelivr.net/gh/TIS2010/static/kintone/jquery-tis.js",
+      "https://cdn.jsdelivr.net/gh/TIS2010/static/kintone/tis.js",
+      "https://cdn.jsdelivr.net/gh/TIS2010/static/kintone/sweetalert.min.js",
+      "js/config.js"
+    ],
+    "css": ["css/51-jp-default.css"]
+  }
+}
